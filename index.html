@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Magic Sort - スマホ用液体ソートゲーム</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#383e44">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- Game Header -->
+    <header class="game-header">
+      <div class="header-top-row">
+        <div class="brand-badge">
+          <span class="brand-title">MAGIC SORT</span>
+          <span class="version-tag" id="app-version">v1.2.1</span>
+        </div>
+        <div class="top-actions">
+          <button id="btn-sound" class="icon-btn" aria-label="サウンド切替" title="サウンド切替">
+            <svg id="sound-icon-on" viewBox="0 0 24 24">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <svg id="sound-icon-off" viewBox="0 0 24 24" style="display: none;">
+              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
+          </button>
+          <button id="btn-levels" class="icon-btn" aria-label="レベル選択" title="レベル選択">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Scoreboard Panel -->
+      <div class="scoreboard-panel" id="scoreboard-panel">
+        <div class="score-item">
+          <span class="score-label">ステージ点</span>
+          <span class="score-value gold" id="score-current">2,400</span>
+        </div>
+        <div class="score-item">
+          <span class="score-label">理論上最大</span>
+          <span class="score-value" id="score-max">2,400</span>
+        </div>
+        <div class="score-item">
+          <span class="score-label">累計スコア</span>
+          <span class="score-value green" id="score-total">0</span>
+        </div>
+        <div class="score-item">
+          <span class="score-label">タイム</span>
+          <span class="score-value" id="game-timer">00:00</span>
+        </div>
+      </div>
+
+      <!-- Level Title & Subtitle -->
+      <div class="level-banner">
+        <h1 class="level-title" id="level-title">Level 1</h1>
+        <div class="level-subtitle" id="level-subtitle">同じ色を揃えて栓をしよう！</div>
+      </div>
+    </header>
+
+    <!-- Action Controls Bar -->
+    <div class="action-controls">
+      <button id="btn-undo" class="tool-btn" disabled aria-label="1手戻す">
+        <svg viewBox="0 0 24 24">
+          <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
+        </svg>
+        <span>戻す</span>
+      </button>
+
+      <button id="btn-restart" class="tool-btn" aria-label="最初からやり直す">
+        <svg viewBox="0 0 24 24">
+          <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
+        <span>やり直す</span>
+      </button>
+
+      <button id="btn-hint" class="tool-btn gold" aria-label="ヒント">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-1.3l-.85-.6C7.8 13.16 7 11.78 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.78-.8 4.16-2.15 5.1z"/>
+        </svg>
+        <span>ヒント</span>
+      </button>
+
+      <button id="btn-add-bottle" class="tool-btn" aria-label="ボトル追加">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <span>+1 瓶</span>
+      </button>
+    </div>
+
+    <!-- Main Game Board -->
+    <main class="game-board-wrapper" id="game-board-wrapper">
+      <div class="bottles-container" id="bottles-container">
+        <!-- Bottle slots generated dynamically by app.js -->
+      </div>
+      <!-- Dedicated Floating Layer for concurrent, multi-touch pouring bottles (v1.2.1) -->
+      <div id="flying-layer"></div>
+      <!-- Tutorial hand icon -->
+      <img id="tutorial-hand" class="tutorial-hand" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M21 11c0-.55-.45-1-1-1h-6.24c.09-.43.24-.97.24-1.5 0-1.93-1.57-3.5-3.5-3.5-.83 0-1.5.67-1.5 1.5v5.09L7.41 9.99c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L11.59 17c.56.56 1.33.88 2.12.88H18c1.66 0 3-1.34 3-3v-3.88z'/%3E%3C/svg%3E" alt="指さしガイド">
+    </main>
+  </div>
+
+  <!-- Level Select Modal -->
+  <div class="modal-overlay" id="modal-levels">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">レベル選択 (1〜50)</h2>
+        <button class="modal-close-btn" id="btn-close-levels">&times;</button>
+      </div>
+      <div class="levels-grid" id="levels-grid">
+        <!-- 50 levels dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Win Modal with Detailed Scorecard -->
+  <div class="modal-overlay" id="modal-win">
+    <div class="modal-card">
+      <div class="win-content">
+        <div class="win-trophy">🏆</div>
+        <h2 class="win-title">LEVEL COMPLETE!</h2>
+        
+        <div class="score-breakdown-card">
+          <div class="breakdown-row">
+            <span>ステージ基礎点:</span>
+            <span id="win-base-score">1,250</span>
+          </div>
+          <div class="breakdown-row">
+            <span>手数評価:</span>
+            <span id="win-moves-detail">3手 (パーフェクト +600)</span>
+          </div>
+          <div class="breakdown-row">
+            <span>タイムボーナス:</span>
+            <span id="win-time-detail">+550 (00:08)</span>
+          </div>
+          <div class="breakdown-row">
+            <span>アシストペナルティ:</span>
+            <span id="win-penalty-detail">0 (ヒント0 / 瓶0)</span>
+          </div>
+          <div class="breakdown-row highlight">
+            <span>今回獲得スコア:</span>
+            <span id="win-score-final">2,400</span>
+          </div>
+          <div class="breakdown-row">
+            <span>理論上最大値:</span>
+            <span id="win-score-max">2,400</span>
+          </div>
+          <div class="breakdown-row">
+            <span>累計トータルスコア:</span>
+            <span id="win-score-total">12,450</span>
+          </div>
+        </div>
+
+        <div class="win-actions">
+          <button id="btn-replay-level" class="secondary-btn">もう一度</button>
+          <button id="btn-next-level" class="primary-btn">次のレベルへ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="js/levels.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/solver.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

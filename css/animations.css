@@ -1,0 +1,139 @@
+/**
+ * Magic Sort - Animations (v1.2.0)
+ * Features: Smooth Bezier pour trajectory, liquid stream dynamics, multi-bottle concurrent flows
+ */
+
+/* Bottle Selected Lift */
+@keyframes bottleSelectedLift {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-24px) scale(1.05);
+  }
+}
+
+/* Cork Stopper Slam-in Bounce */
+@keyframes corkPopIn {
+  0% {
+    transform: translate(-50%, -60px) scale(0.6);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, 4px) scale(1.15, 0.85);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(-50%, -4px) scale(0.95, 1.05);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1, 1);
+    opacity: 1;
+  }
+}
+
+/* Sparkle Flash */
+@keyframes sparkleBurst {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.4) rotate(180deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.8) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Smooth Fluid Stream Pouring */
+@keyframes streamFlowIn {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  80% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}
+
+/* Liquid Surface Ripple Effect */
+@keyframes liquidRippleWave {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.45) translateY(-2px);
+  }
+}
+
+/* Bottle Shake on Invalid Move */
+@keyframes bottleShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px) rotate(-2.5deg); }
+  40% { transform: translateX(7px) rotate(2.5deg); }
+  60% { transform: translateX(-4px) rotate(-1.5deg); }
+  80% { transform: translateX(4px) rotate(1.5deg); }
+}
+
+/* Win Modal Pop */
+@keyframes winModalPop {
+  0% {
+    transform: scale(0.7) translateY(30px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) translateY(-5px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Hint Bottle Glow */
+@keyframes hintPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px 2px rgba(245, 179, 22, 0.4);
+    filter: drop-shadow(0 0 8px rgba(245, 179, 22, 0.6));
+  }
+  50% {
+    box-shadow: 0 0 24px 6px rgba(245, 179, 22, 0.85);
+    filter: drop-shadow(0 0 14px rgba(245, 179, 22, 0.95));
+  }
+}
+
+/* Target Arrow Bobbing */
+@keyframes arrowBob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Settle Bounce on Return */
+@keyframes settleBounce {
+  0% {
+    transform: translateY(-6px);
+  }
+  60% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
